@@ -53,11 +53,12 @@ class Building : public RewardBuilding {
 };
 
 //Bâtiments :
-
+//Proba d'être malade gérée dans sick en fct du type de Housing que c'est.
 class HousingBuilding : public Slum{ //Bcp de chance d'être malade, et augmente nombre morts. Peu cher, grande capacité.
     public:
         Slum();
         Slum(int x, int y);
+        int generateDeath();
 };
 
 class HousingBuilding : public Appartments{ //Un peu de chance d'être malade, grande capacité, moyennement cher comparé à capacité.
@@ -72,6 +73,52 @@ class HousingBuilding : public House{ //Peu de chance d'être malade, cher compa
         House(int x, int y);
 };
 
+//Production :
+class DrillingMachine : public ProductionBuilding {
+    public:
+        int generateRessource();
+        int generateDeath();
+};
+
+class SolarPanel : public ProductionBuilding {
+    public:
+        int generateRessource();
+};
+class WindTurbine : public ProductionBuilding {
+    public:
+        int generateRessource();
+};
+
+//Reward :
+class ReligiousBuilding : public RewardBuilding {
+    public:
+        int generateScore();
+     
+};
+class Hotel : public RewardBuilding {
+    public:
+        int generateScore();
+        //int welcomedTourists();
+        int getNRooms{return nRooms;}
+    private :
+        int nRooms;
+};
+class Statue : public RewardBuilding {
+    public:
+        int generateScore();
+};
+class Hospital : public RewardBuilding {
+    public:
+        int generateScore();
+        int welcomedSicks();
+        int getNRooms{return nRooms;}
+    private :
+        int nRooms;
+};
+class Stadium : public RewardBuilding {
+    public:
+        int generateScore();
+};
 // -------------------  Classes du jeu comprenant les données principales 
 
 class Game {
@@ -115,4 +162,9 @@ class Game {
 };
 
 
-//Il faut trouver comment faire une surcharge
+
+//Rajouter une surcharge de l'opérateur << pour afficher les dates par exemple  
+
+getDate(){
+    return day + "/" + month + "/" + year;
+}
