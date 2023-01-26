@@ -46,16 +46,16 @@ std::string Game::getGameState(){
 
     //Récaptitulatif des bâtiments
     for(int i=0; i<cptIdSlumBuilding; i++){
-        gameState += "\nSlum number " + std::to_string(i) + " : " + std::to_string(LSlumBuilding[i]->getNWorker()) + " / " + 
-        std::to_string(LSlumBuilding[i]->getNWorkersMax()) + " workers";        
+        gameState += "\nSlum number " + std::to_string(i) + " : " + std::to_string(LSlumBuilding.at(i)->getNWorker()) + " / " + 
+        std::to_string(LSlumBuilding.at(i)->getNWorker()) + " workers";        
     }
     for(int i=0; i<cptIdAppartmentsBuilding; i++){
-        gameState += "\nAppartments number " + std::to_string(i) + " : " + std::to_string(LAppartmentsBuilding[i]->getNWorker()) + " / " + 
-        std::to_string(LAppartmentsBuilding[i]->getNWorkersMax()) + " workers";        
+        gameState += "\nAppartments number " + std::to_string(i) + " : " + std::to_string(LAppartmentsBuilding.at(i)->getNWorker()) + " / " + 
+        std::to_string(LAppartmentsBuilding.at(i)->getNWorker()) + " workers";        
     }
     for(int i=0; i<cptIdHouseBuilding; i++){
-        gameState += "\nHouse number " + std::to_string(i) + " : " + std::to_string(LHouseBuilding[i]->getNWorker()) + " / " + 
-        std::to_string(LHouseBuilding[i]->getNWorkersMax()) + " workers";        
+        gameState += "\nHouse number " + std::to_string(i) + " : " + std::to_string(LHouseBuilding.at(i)->getNWorker()) + " / " + 
+        std::to_string(LHouseBuilding.at(i)->getNWorker()) + " workers";        
     }
     gameState += "\n-" + std::to_string(cptIdDrillingMachineBuilding) + " Drilling Machine";
     gameState += "\n-" + std::to_string(cptIdSolarPanelBuilding) + " Solar Panel";
@@ -87,7 +87,7 @@ int Game::build(std::string typeBuilding){
         Slum* p = new Slum;
         nWorkersAvailable--;
 
-        LSlumBuilding[cptIdSlumBuilding-1] = p;
+        LSlumBuilding.push_back(p);
 
         return 1;
     } else if(typeBuilding == "Appartments"){
@@ -95,7 +95,7 @@ int Game::build(std::string typeBuilding){
         Appartments* p = new Appartments;
         nWorkersAvailable--;
         
-        LAppartmentsBuilding[cptIdAppartmentsBuilding-1] = p;
+        LAppartmentsBuilding.push_back(p);
 
         return 1;
     } else if(typeBuilding == "House"){
@@ -103,7 +103,7 @@ int Game::build(std::string typeBuilding){
         House* p = new House;
         nWorkersAvailable--;
         
-        LHouseBuilding[cptIdHouseBuilding-1] = p;
+        LHouseBuilding.push_back(p);
 
         return 1;
     }
@@ -113,7 +113,7 @@ int Game::build(std::string typeBuilding){
         DrillingMachine* p = new DrillingMachine;
         nWorkersAvailable--;
 
-        LDrillingMachineBuilding[cptIdDrillingMachineBuilding-1] = p;
+        LDrillingMachineBuilding.push_back(p);
 
         return 1;
     }else if(typeBuilding == "SolarPanel"){
@@ -121,7 +121,7 @@ int Game::build(std::string typeBuilding){
         SolarPanel* p = new SolarPanel;
         nWorkersAvailable--;
 
-        LSolarPanelBuilding[cptIdSolarPanelBuilding-1] = p;
+        LSolarPanelBuilding.push_back(p);
 
         return 1;
     }else if(typeBuilding == "WindTurbine"){
@@ -129,7 +129,7 @@ int Game::build(std::string typeBuilding){
         WindTurbine* p = new WindTurbine;
         nWorkersAvailable--;
 
-        LWindTurbineBuilding[cptIdWindTurbineBuilding-1] = p;
+        LWindTurbineBuilding.push_back(p);
 
         return 1;
     }
@@ -139,7 +139,7 @@ int Game::build(std::string typeBuilding){
         ReligiousBuilding* p = new ReligiousBuilding;
         nWorkersAvailable--;
 
-        LReligiousBuilding[cptIdReligiousBuilding-1] = p;
+        LReligiousBuilding.push_back(p);
 
         return 1;
     }else if (typeBuilding == "Hotel"){
@@ -147,7 +147,7 @@ int Game::build(std::string typeBuilding){
         Hotel* p = new Hotel;
         nWorkersAvailable--;
 
-        LHotelBuilding[cptIdHotelBuilding-1] = p;
+        LHotelBuilding.push_back(p);
 
         return 1;
     }else if(typeBuilding == "Statue"){
@@ -155,7 +155,7 @@ int Game::build(std::string typeBuilding){
         Statue* p = new Statue;
         nWorkersAvailable--;
 
-        LStatueBuilding[cptIdStatueBuilding-1] = p;
+        LStatueBuilding.push_back(p);
 
         return 1;
     }else if(typeBuilding == "Hospital"){
@@ -163,7 +163,7 @@ int Game::build(std::string typeBuilding){
         Hospital* p = new Hospital;
         nWorkersAvailable--;
 
-        LHospitalBuilding[cptIdHospitalBuilding-1] = p;
+        LHospitalBuilding.push_back(p);
 
         return 1;
     }else if(typeBuilding == "Stadium"){
@@ -171,7 +171,7 @@ int Game::build(std::string typeBuilding){
         Stadium* p = new Stadium;
         nWorkersAvailable--;
 
-        LStadiumBuilding[cptIdStadiumBuilding-1] = p;
+        LStadiumBuilding.push_back(p);
 
         return 1;
     
@@ -182,13 +182,13 @@ int Game::build(std::string typeBuilding){
     }
 }
 
-int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça, on estime que le joueur crée un nouveau bât que s'il est plein
+/*int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça, on estime que le joueur crée un nouveau bât que s'il est plein
     if(typeHousing == "Slum"){
-        if(LSlumBuilding[cptIdSlumBuilding-1]->getNWorker() < LSlumBuilding[cptIdSlumBuilding-1]->getNWorkersMax()){
+        if(LSlumBuilding.at(cptIdSlumBuilding-1)->getNWorker() < LSlumBuilding.at(cptIdSlumBuilding-1)->getNWorkersMax()){
             std::cout << "Adding a worker to a slum" << std::endl;
-            LSlumBuilding[cptIdSlumBuilding-1]->setNWorker(LSlumBuilding[cptIdSlumBuilding-1]->getNWorker() + 1);
-            nWorkers++;
-            nWorkersAvailable++;
+            LSlumBuilding.at(cptIdSlumBuilding-1)->setNWorker(LSlumBuilding.at(cptIdSlumBuilding-1)->getNWorker() + 1);
+            nWorkers += 3;
+            nWorkersAvailable += 3;
             return 1;
         } else {
             std::cout << "No more place in this slum" << std::endl;
@@ -196,10 +196,10 @@ int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça
         }
     } else if(typeHousing == "Appartments"){
         std::cout << "Adding a worker to a group of appartments" << std::endl;
-        if(LAppartmentsBuilding[cptIdAppartmentsBuilding-1]->getNWorker() < LAppartmentsBuilding[cptIdAppartmentsBuilding-1]->getNWorkersMax()){
-            LAppartmentsBuilding[cptIdAppartmentsBuilding-1]->setNWorker(LAppartmentsBuilding[cptIdAppartmentsBuilding-1]->getNWorker() + 1);
-            nWorkers++;
-            nWorkersAvailable++;
+        if(LAppartmentsBuilding.at(cptIdAppartmentsBuilding-1)->getNWorker() < LAppartmentsBuilding.at(cptIdAppartmentsBuilding-1)->getNWorkersMax()){
+            LAppartmentsBuilding.at(cptIdAppartmentsBuilding-1)->setNWorker(LAppartmentsBuilding.at(cptIdAppartmentsBuilding-1)->getNWorker() + 1);
+            nWorkers += 5;
+            nWorkersAvailable += 5;
             return 1;
         } else {
             std::cout << "No more place in this group of appartments" << std::endl;
@@ -207,8 +207,8 @@ int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça
         }
     } else if(typeHousing == "House"){
         std::cout << "Adding a worker to a house" << std::endl;
-        if(LHouseBuilding[cptIdHouseBuilding-1]->getNWorker() < LHouseBuilding[cptIdHouseBuilding-1]->getNWorkersMax()){
-            LHouseBuilding[cptIdHouseBuilding-1]->setNWorker(LHouseBuilding[cptIdHouseBuilding-1]->getNWorker() + 1);
+        if(LHouseBuilding.at(cptIdHouseBuilding-1)->getNWorker() < LHouseBuilding.at(cptIdHouseBuilding-1)->getNWorkersMax()){
+            LHouseBuilding.at(cptIdHouseBuilding-1)->setNWorker(LHouseBuilding.at(cptIdHouseBuilding-1)->getNWorker() + 1);
             nWorkers++;
             nWorkersAvailable++;
             return 1;
@@ -221,7 +221,7 @@ int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça
         std::cout << "Building type not found" << std::endl;
         return 0;
     }
-}
+}*/
 
 int Game::ActionBuild(std::string typeBuilding, int n){
     if(checkWorkers(n)){
@@ -238,7 +238,7 @@ int Game::ActionBuild(std::string typeBuilding, int n){
 bool Game::verifEndGame(){
     if(cptIdStadiumBuilding >= 4){
         for(int i =0; i<5; i++){
-            if(LStadiumBuilding[i]->getInConstruction()){
+            if(LStadiumBuilding.at(i)->getInConstruction()){
                 return false;
             }
         }
@@ -257,114 +257,129 @@ void Game::newTurn(Game* pgame){
 
     //Housing buildings :
     int temp;
+    bool btemp;
     for(int i=0; i<cptIdSlumBuilding; i++){
-        temp = LSlumBuilding[i]->newTurn(); //Retourne nTurnLeft
+        btemp = LSlumBuilding.at(i)->getInConstruction(); //En construction tour d'avant ?
+        temp = LSlumBuilding.at(i)->newTurn(); //Retourne nTurnLeft
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the slum" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Slum built" << std::endl;
-            nWorkersAvailable++;
+            nWorkers += 3;
+            nWorkersAvailable += 4;   //3 workers + 1 worker for the construction
         }
     }
     for(int i=0; i<cptIdAppartmentsBuilding; i++){
-        temp = LAppartmentsBuilding[i]->newTurn();
+        btemp = LAppartmentsBuilding.at(i)->getInConstruction();
+        temp = LAppartmentsBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the group of appartments" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Group of appartments built" << std::endl;
-            nWorkersAvailable++;
+            nWorkers += 5;
+            nWorkersAvailable += 6;
         }
     }
     for(int i=0; i<cptIdHouseBuilding; i++){
-        temp = LHouseBuilding[i]->newTurn();
+        btemp = LHouseBuilding.at(i)->getInConstruction();
+        temp = LHouseBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the house" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "House built" << std::endl;
-            nWorkersAvailable++;
+            nWorkers ++;
+            nWorkersAvailable += 2;
         }
     }
     //Production buildings :
     for(int i=0; i<cptIdDrillingMachineBuilding; i++){
-        temp = LDrillingMachineBuilding[i]->newTurn();
+        btemp = LDrillingMachineBuilding.at(i)->getInConstruction();
+        temp = LDrillingMachineBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the drilling machine" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Drilling machine built" << std::endl;
             nWorkersAvailable++;
         }
     }
     for(int i=0; i<cptIdSolarPanelBuilding; i++){
-        temp = LSolarPanelBuilding[i]->newTurn();
+        btemp = LSolarPanelBuilding.at(i)->getInConstruction();
+        temp = LSolarPanelBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the solar panel" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Solar panel built" << std::endl;
             nWorkersAvailable++;
         }
     }
     for(int i=0; i<cptIdWindTurbineBuilding; i++){
-        temp = LWindTurbineBuilding[i]->newTurn();
+        btemp = LWindTurbineBuilding.at(i)->getInConstruction();
+        temp = LWindTurbineBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the wind turbine" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Wind turbine built" << std::endl;
             nWorkersAvailable++;
         }
     }
     //Reward buildings :    
     for(int i=0; i<cptIdHotelBuilding; i++){
-        temp = LHotelBuilding[i]->newTurn();
+        btemp = LHotelBuilding.at(i)->getInConstruction();
+        temp = LHotelBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the hotel" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Hotel built" << std::endl;
             nWorkersAvailable++;
         }
     }
     for(int i=0; i<cptIdHospitalBuilding; i++){
-        temp = LHospitalBuilding[i]->newTurn();
+        btemp = LHospitalBuilding.at(i)->getInConstruction();
+        temp = LHospitalBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the hospital" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Hospital built" << std::endl;
             nWorkersAvailable++;
         }
     }
     for(int i=0; i<cptIdStatueBuilding; i++){
-        temp = LStatueBuilding[i]->newTurn();
+        btemp = LStatueBuilding.at(i)->getInConstruction();
+        temp = LStatueBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the statue" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Statue built" << std::endl;
             nWorkersAvailable++;
         }
     }
     for (int i=0; i<cptIdReligiousBuilding; i++){
-        temp = LReligiousBuilding[i]->newTurn();
+        btemp = LReligiousBuilding.at(i)->getInConstruction();
+        temp = LReligiousBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the religious building" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Religious building built" << std::endl;
             nWorkersAvailable++;
         }
     }
     for(int i=0; i<cptIdStadiumBuilding; i++){
-        temp = LStadiumBuilding[i]->newTurn();
+        btemp = LStadiumBuilding.at(i)->getInConstruction();
+        temp = LStadiumBuilding.at(i)->newTurn();
         if (temp>0){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the stadium" << std::endl;
         }
-        else{
+        else if(btemp){
             std::cout << "Stadium built" << std::endl;
             nWorkersAvailable++;
         }

@@ -1,6 +1,7 @@
 #pragma once
 #include "buildings.hpp"
 #include "date.hpp"
+#include <vector>
 
 // -------------------  Classes du jeu comprenant les données principales 
 
@@ -28,7 +29,7 @@ class Game {
         int checkWorkers(int n); //Vérifie s'il reste assez de travailleurs disponibles
         int build(std::string typeBuilding);
         int destroy(std::string typeBuilding);
-        int addWorker(std::string typeHousing);
+        //int addWorker(std::string typeHousing); //Fonctionnalité abandonnée mais implémentée. On la trouvait inutile pour le jeu
         
         int ActionBuild(std::string typeBuilding, int n);
 
@@ -67,16 +68,16 @@ class Game {
         Date currentDate;
 
         //Liste des bâtiments
-        Slum* LSlumBuilding[20];
-        Appartments* LAppartmentsBuilding[20]; 
-        House* LHouseBuilding[20];
-        DrillingMachine* LDrillingMachineBuilding[20];
-        SolarPanel* LSolarPanelBuilding[20];
-        WindTurbine* LWindTurbineBuilding[20];
-        ReligiousBuilding* LReligiousBuilding[20];
-        Hotel* LHotelBuilding[20];
-        Statue* LStatueBuilding[20];
-        Hospital* LHospitalBuilding[20];
-        Stadium* LStadiumBuilding[5]; // A 5 stadium construit, fin de la partie
+        std::vector<Slum*> LSlumBuilding;
+        std::vector<Appartments*> LAppartmentsBuilding; 
+        std::vector<House*> LHouseBuilding;
+        std::vector<DrillingMachine*> LDrillingMachineBuilding;
+        std::vector<SolarPanel*> LSolarPanelBuilding;
+        std::vector<WindTurbine*> LWindTurbineBuilding;
+        std::vector<ReligiousBuilding*> LReligiousBuilding;
+        std::vector<Hotel*> LHotelBuilding;
+        std::vector<Statue*> LStatueBuilding;
+        std::vector<Hospital*> LHospitalBuilding;
+        std::vector<Stadium*> LStadiumBuilding; // A 5 stadium construit, fin de la partie
         
 };

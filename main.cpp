@@ -83,17 +83,18 @@ int main(){
     Game game(100, 100, 100, 100, 100, 100, 1, 100, Date(1, 12, 2022), Date(8, 11, 2018)); //1 worker au début
     std::cout << game.getGameState() << std::endl;
     game.ActionBuild("Slum", 1);
-    game.ActionBuild("Appartments", 1); //Ne marche pas 
+    game.ActionBuild("Appartments", 1); //Ne marche pas car pas slum pas encore construit
     std::cout << game.getGameState() << std::endl;
 
-    game.addWorker("Slum");
+    //game.addWorker("Slum");
+    game.newTurn(&game);
     game.ActionBuild("Appartments", 1); //Marche
     for (int i=0; i<3; i++){
         game.newTurn(&game);
     }
-    for(int i=0; i<10; i++){
-        game.addWorker("Appartments");
-    }
+    // for(int i=0; i<10; i++){
+    //     game.addWorker("Appartments");
+    // }
     std::cout << game.getGameState() << std::endl;
 
     game.ActionBuild("ReligiousBuilding", 1);
@@ -102,7 +103,7 @@ int main(){
     game.ActionBuild("State", 1); //marche pas 
     game.ActionBuild("Statue", 1);
    
-    for(int i=0; i<10; i++){
+    for(int i=0; i<7; i++){
         game.newTurn(&game);
         std::cout << game.getGameState() << std::endl;
 

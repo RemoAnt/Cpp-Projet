@@ -26,11 +26,11 @@ class HousingBuilding : public Building {
         int sick();
         int getNWorker(){return nWorker;}
         int setNWorker(int n){nWorker = n; return n;}
-        int getNWorkersMax(){return nWorkersMax;}
+        //int getNWorkersMax(){return nWorkersMax;}
 
     protected: 
         int nWorker;
-        int nWorkersMax;     
+        //int nWorkersMax;     
 };
 
 class ProductionBuilding : public Building {

@@ -40,8 +40,8 @@ Slum::Slum(){
     cptIdSlumBuilding++;
     this->scoreBuilding = 10;
     this->timeToBuilt = 1; 
-    this->nWorker = 0;
-    this->nWorkersMax = 3;
+    this->nWorker = 3;
+    //this->nWorkersMax = 3;
     this->inConstruction = true;
 }
 
@@ -50,8 +50,8 @@ Appartments::Appartments(){
     cptIdAppartmentsBuilding++;
     this->scoreBuilding = 10;
     this->timeToBuilt = 3;
-    this->nWorker = 0;
-    this->nWorkersMax = 5;
+    this->nWorker = 5;
+    //this->nWorkersMax = 5;
     this->inConstruction = true;
 }
 
@@ -60,8 +60,8 @@ House::House(){
     cptIdHouseBuilding++;
     this->scoreBuilding = 50;
     this->timeToBuilt = 2;
-    this->nWorker = 0;
-    this->nWorkersMax = 1;
+    this->nWorker = 2;
+    //this->nWorkersMax = 1;
     this->inConstruction = true;
 }
 
