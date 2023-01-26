@@ -4,7 +4,11 @@
 
 class Date {
     public:
-        int getDate(); //réfléchir comment
+        //Constructors
+        Date();
+        Date(int month, int day, int year);
+        //Getter
+        std::string toString(){return std::to_string(month) + " / " + std::to_string(day) + " / " + std::to_string(year);} //réfléchir comment
         int getDay(){return day;}
         int getMonth(){return month;}
         int getYear(){return year;}
@@ -21,56 +25,61 @@ class Date {
 //Classes abstraites
 class Building { 
     public:
-        int buildTimeLeft();
+        template <class T>
+        int newTurn(T* pgame);
         int generateCo2();
-        int build();
+        int generateScore();
         int destroy();
 
-    private:
-        static int idBuilding;
+        //getters
+        int getIdBuilding(){return idBuilding;}
+
+    protected:
+        int idBuilding;
         int scoreBuilding; 
-        int timeToBuilt;
-        int nWorkersNeeded;
+        int timeToBuilt; //in turns
+        bool inConstruction;
 };
 
-class Building : public HousingBuilding {
+class HousingBuilding : public Building {
     public:
-        int getnWorker(){return nWorker;}
         int sick();
+        int getNWorker(){return nWorker;}
+        int setNWorker(int n){nWorker = n; return n;}
+        int getNWorkersMax(){return nWorkersMax;}
 
-    private: 
-        int nWorker;     
+    protected: 
+        int nWorker;
+        int nWorkersMax;     
 };
 
-class Building : public ProductionBuilding {
+class ProductionBuilding : public Building {
     public:
         int generateRessource();
+    
 };
 
-class Building : public RewardBuilding {
+class RewardBuilding : public Building {
     public:
         int generateScore();
 };
 
-//Bâtiments :
+//Habitats :
 //Proba d'être malade gérée dans sick en fct du type de Housing que c'est.
-class HousingBuilding : public Slum{ //Bcp de chance d'être malade, et augmente nombre morts. Peu cher, grande capacité.
+class Slum : public HousingBuilding{ //Bcp de chance d'être malade, et augmente nombre morts. Peu cher, grande capacité.
     public:
         Slum();
-        Slum(int x, int y);
         int generateDeath();
 };
 
-class HousingBuilding : public Appartments{ //Un peu de chance d'être malade, grande capacité, moyennement cher comparé à capacité.
+class Appartments : public HousingBuilding{ //Un peu de chance d'être malade, grande capacité, moyennement cher comparé à capacité.
     public:
         Appartments();
-        Appartments(int x, int y);
 };
 
-class HousingBuilding : public House{ //Peu de chance d'être malade, cher comparé à petite capacité.
+class House : public HousingBuilding{ //Peu de chance d'être malade, cher comparé à petite capacité.
     public:
         House();
-        House(int x, int y);
 };
 
 //Production :
@@ -99,7 +108,7 @@ class Hotel : public RewardBuilding {
     public:
         int generateScore();
         //int welcomedTourists();
-        int getNRooms{return nRooms;}
+        int getNRooms(){return nRooms;}
     private :
         int nRooms;
 };
@@ -111,7 +120,7 @@ class Hospital : public RewardBuilding {
     public:
         int generateScore();
         int welcomedSicks();
-        int getNRooms{return nRooms;}
+        int getNRooms(){return nRooms;}
     private :
         int nRooms;
 };
@@ -119,19 +128,29 @@ class Stadium : public RewardBuilding {
     public:
         int generateScore();
 };
+
 // -------------------  Classes du jeu comprenant les données principales 
 
 class Game {
     public:
-
-        // Fonctions appelées en "temps réel" :
+        //Constructeurs
+        Game();
+            //Sert à faire des tests en initialisant à un moment donné sans avoir joué
+        Game(int money, int petrol, float popularity, int gameScore, int nStadium, int hiddenDeath, int timeLeft, int nWorkers, Date deadline, Date currentDate);
+        // Fonctions appelées en pendant le jeu :
         int calculGameScore();
         int calculPopularity();
         int calculMoney();
         int calculPetrol();
         int calculTimeLeft();
         int calculDeath();
-        int refresh();
+        void newTurn(Game* pgame);
+
+        //Actions du joueur
+        int checkWorkers(int n); //Vérifie s'il reste assez de travailleurs disponibles
+        int build(std::string typeBuilding);
+        int destroy(std::string typeBuilding);
+        int addWorker(std::string typeHousing);
 
         // Fonction appelée qu'à la fin
         int fin();        
@@ -146,25 +165,32 @@ class Game {
         int getTimeLeft(){return timeLeft;}
         Date getDeadline(){return deadline;}
         Date getCurrentDate(){return currentDate;}
+        int getnWorkers(){return nWorkers;}
+        int getnWorkersAvailable(){return nWorkersAvailable;}
+        int setnWorkersAvailable(int n){nWorkersAvailable = n; return nWorkersAvailable;}
+        std::string getGameState();
 
 
-    private :
+   
         int money;
         int petrol; 
-        float popularity; //En pourcentage, dépend des bât et en débloquent certains (par exemple au bout de tant d'hôtel, on peut faire une statue)
+        float popularity; //En n spectateurs ?, dépend des bât et en débloquent certains (par exemple au bout de tant d'hôtel, on peut faire une statue)
         int gameScore;
         int nStadium;
         int hiddenDeath;
         int timeLeft;
+        int nWorkers;
+        int nWorkersAvailable;
+        int nTurn;
         Date deadline;
         Date currentDate;
-        Building* l_bat[3]; //3 types de bâtiments différents
+        Slum* LSlumBuilding[20];
+        Appartments* LAppartmentsBuilding[20]; 
+        House* LHouseBuilding[20];
+        ProductionBuilding LProductionBuilding[20];
+        RewardBuilding LRewardBuilding[20];
 };
 
 
 
 //Rajouter une surcharge de l'opérateur << pour afficher les dates par exemple  
-
-getDate(){
-    return day + "/" + month + "/" + year;
-}
