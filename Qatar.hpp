@@ -85,16 +85,19 @@ class House : public HousingBuilding{ //Peu de chance d'être malade, cher compa
 //Production :
 class DrillingMachine : public ProductionBuilding {
     public:
+        DrillingMachine();
         int generateRessource();
         int generateDeath();
 };
 
 class SolarPanel : public ProductionBuilding {
     public:
+        SolarPanel();
         int generateRessource();
 };
 class WindTurbine : public ProductionBuilding {
     public:
+        WindTurbine();
         int generateRessource();
 };
 
@@ -102,22 +105,22 @@ class WindTurbine : public ProductionBuilding {
 class ReligiousBuilding : public RewardBuilding {
     public:
         int generateScore();
+        ReligiousBuilding();
      
 };
 class Hotel : public RewardBuilding {
     public:
+        Hotel();
         int generateScore();
-        //int welcomedTourists();
-        int getNRooms(){return nRooms;}
-    private :
-        int nRooms;
 };
 class Statue : public RewardBuilding {
     public:
+        Statue();
         int generateScore();
 };
 class Hospital : public RewardBuilding {
     public:
+        Hospital();
         int generateScore();
         int welcomedSicks();
         int getNRooms(){return nRooms;}
@@ -126,6 +129,7 @@ class Hospital : public RewardBuilding {
 };
 class Stadium : public RewardBuilding {
     public:
+        Stadium();
         int generateScore();
 };
 
@@ -151,6 +155,8 @@ class Game {
         int build(std::string typeBuilding);
         int destroy(std::string typeBuilding);
         int addWorker(std::string typeHousing);
+        
+        int ActionBuild(std::string typeBuilding, int n);
 
         // Fonction appelée qu'à la fin
         int fin();        
@@ -168,12 +174,13 @@ class Game {
         int getnWorkers(){return nWorkers;}
         int getnWorkersAvailable(){return nWorkersAvailable;}
         int setnWorkersAvailable(int n){nWorkersAvailable = n; return nWorkersAvailable;}
-        std::string getGameState();
+        std::string getGameState(); //Dans l'invite de commande
 
 
-   
+    private:
         int money;
         int petrol; 
+        int electricity;
         float popularity; //En n spectateurs ?, dépend des bât et en débloquent certains (par exemple au bout de tant d'hôtel, on peut faire une statue)
         int gameScore;
         int nStadium;
@@ -184,11 +191,19 @@ class Game {
         int nTurn;
         Date deadline;
         Date currentDate;
+
+        //Liste des bâtiments
         Slum* LSlumBuilding[20];
         Appartments* LAppartmentsBuilding[20]; 
         House* LHouseBuilding[20];
-        ProductionBuilding LProductionBuilding[20];
-        RewardBuilding LRewardBuilding[20];
+        DrillingMachine* LDrillingMachineBuilding[20];
+        SolarPanel* LSolarPanelBuilding[20];
+        WindTurbine* LWindTurbineBuilding[20];
+        ReligiousBuilding* LReligiousBuilding[20];
+        Hotel* LHotelBuilding[20];
+        Statue* LStatueBuilding[20];
+        Hospital* LHospitalBuilding[20];
+        Stadium* LStadiumBuilding[5]; // A 5 stadium construit, fin de la partie
 };
 
 

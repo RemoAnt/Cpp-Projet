@@ -8,9 +8,15 @@ int cptIdSlumBuilding = 0;
 int cptIdAppartmentsBuilding = 0;
 int cptIdHouseBuilding = 0;
 //cpt production buildings
-
+int cptIdDrillingMachineBuilding = 0;
+int cptIdSolarPanelBuilding = 0;
+int cptIdWindTurbineBuilding = 0;
 //cpt reward buildings
-
+int cptIdReligiousBuilding = 0;
+int cptIdHotelBuilding = 0;
+int cptIdStatueBuilding = 0;
+int cptIdHospitalBuilding = 0;
+int cptIdStadiumBuilding = 0;
 
 //Date-------------------------------------------------------------------------------------------------
 Date::Date() {}
@@ -19,6 +25,8 @@ Date::Date(int month, int day, int year){
     this->month = month;
     this->year = year;
 }
+
+//-------------------------------------------------------------------------------------------------
 //Building-------------------------------------------------------------------------------------------------
 template <class T>
 int Building::newTurn(T* pgame){
@@ -66,6 +74,76 @@ House::House(){
     this->inConstruction = true;
 }
 
+//Production
+//Constructors
+
+DrillingMachine::DrillingMachine(){
+    this->idBuilding = cptIdDrillingMachineBuilding;
+    cptIdDrillingMachineBuilding++;
+    this->scoreBuilding = 50;
+    this->timeToBuilt = 1;
+    this->inConstruction = true;
+}
+
+SolarPanel::SolarPanel(){
+    this->idBuilding = cptIdSolarPanelBuilding;
+    cptIdSolarPanelBuilding++;
+    this->scoreBuilding = 70;
+    this->timeToBuilt = 1;
+    this->inConstruction = true;
+}
+
+WindTurbine::WindTurbine(){
+    this->idBuilding = cptIdWindTurbineBuilding;
+    cptIdWindTurbineBuilding++;
+    this->scoreBuilding = 70;
+    this->timeToBuilt = 1;
+    this->inConstruction = true;
+}
+
+//Reward
+//Constructors
+ReligiousBuilding::ReligiousBuilding(){
+    this->idBuilding = cptIdReligiousBuilding;
+    cptIdReligiousBuilding++;
+    this->scoreBuilding = 300;
+    this->timeToBuilt = 5;
+    this->inConstruction = true;
+}
+
+Hotel::Hotel(){
+    this->idBuilding = cptIdHotelBuilding;
+    cptIdHotelBuilding++;
+    this->scoreBuilding = 300;
+    this->timeToBuilt = 3;
+    this->inConstruction = true;
+}
+
+Statue::Statue(){  
+    this->idBuilding = cptIdStatueBuilding;
+    cptIdStatueBuilding++;
+    this->scoreBuilding = 700;
+    this->timeToBuilt = 4;
+    this->inConstruction = true;
+}
+
+Hospital::Hospital(){
+    this->idBuilding = cptIdHospitalBuilding;
+    cptIdHospitalBuilding++;
+    this->scoreBuilding = 300;
+    this->timeToBuilt = 3;
+    this->inConstruction = true;
+}
+
+Stadium::Stadium(){
+    this->idBuilding = cptIdStadiumBuilding;
+    cptIdStadiumBuilding++;
+    this->scoreBuilding = 1000;
+    this->timeToBuilt = 6;
+    this->inConstruction = true;
+}
+
+//-------------------------------------------------------------------------------------------------
 //Game-------------------------------------------------------------------------------------------------
 Game::Game(int money, int petrol, float popularity, int gameScore, int nStadium, int hiddenDeath, int nWorkers, int timeLeft, Date deadline, Date currentDate){
     this->money = money;
@@ -102,8 +180,17 @@ std::string Game::getGameState(){
         gameState += "\nHouse number " + std::to_string(i) + " : " + std::to_string(LHouseBuilding[i]->getNWorker()) + " / " + 
         std::to_string(LHouseBuilding[i]->getNWorkersMax()) + " workers";        
     }
+    gameState += "\n-" + std::to_string(cptIdDrillingMachineBuilding) + " Drilling Machine";
+    gameState += "\n-" + std::to_string(cptIdSolarPanelBuilding) + " Solar Panel";
+    gameState += "\n-" + std::to_string(cptIdWindTurbineBuilding) + " Wind Turbine";
+    gameState += "\n-" + std::to_string(cptIdHotelBuilding) + " Hotel";
+    gameState += "\n-" + std::to_string(cptIdHospitalBuilding) + " Hospital";
+    gameState += "\n-" + std::to_string(cptIdReligiousBuilding) + " Religious building";
+    gameState += "\n-" + std::to_string(cptIdStatueBuilding) + " Statue";
+    gameState += "\n-" + std::to_string(cptIdStadiumBuilding) + " Stadium";
 
-    gameState += "\n\n";
+
+    gameState += "\nTURN" + std::to_string(nTurn) + "\n\n";
     return gameState;
 }
 
@@ -143,12 +230,75 @@ int Game::build(std::string typeBuilding){
         return 1;
     }
     //Building production building
+    else if(typeBuilding == "DrillingMachine"){
+        std::cout << "Building a " + std::to_string(cptIdDrillingMachineBuilding) + " Drilling Machine" << std::endl;
+        DrillingMachine* p = new DrillingMachine;
+        nWorkersAvailable--;
 
+        LDrillingMachineBuilding[cptIdDrillingMachineBuilding-1] = p;
+
+        return 1;
+    }else if(typeBuilding == "SolarPanel"){
+        std::cout << "Building a " + std::to_string(cptIdSolarPanelBuilding) + " Solar Panel" << std::endl;
+        SolarPanel* p = new SolarPanel;
+        nWorkersAvailable--;
+
+        LSolarPanelBuilding[cptIdSolarPanelBuilding-1] = p;
+
+        return 1;
+    }else if(typeBuilding == "WindTurbine"){
+        std::cout << "Building a " + std::to_string(cptIdWindTurbineBuilding) + " Wind Turbine" << std::endl;
+        WindTurbine* p = new WindTurbine;
+        nWorkersAvailable--;
+
+        LWindTurbineBuilding[cptIdWindTurbineBuilding-1] = p;
+
+        return 1;
+    }
     //Building reward building
+    else if (typeBuilding == "ReligiousBuilding"){
+        std::cout << "Building a " + std::to_string(cptIdReligiousBuilding) + " Religious Building" << std::endl;
+        ReligiousBuilding* p = new ReligiousBuilding;
+        nWorkersAvailable--;
+
+        LReligiousBuilding[cptIdReligiousBuilding-1] = p;
+
+        return 1;
+    }else if (typeBuilding == "Hotel"){
+        std::cout << "Building a " + std::to_string(cptIdHotelBuilding) + " Hotel" << std::endl;
+        Hotel* p = new Hotel;
+        nWorkersAvailable--;
+
+        LHotelBuilding[cptIdHotelBuilding-1] = p;
+
+        return 1;
+    }else if(typeBuilding == "Statue"){
+        std::cout << "Building a " + std::to_string(cptIdStatueBuilding) + " Statue" << std::endl;
+        Statue* p = new Statue;
+        nWorkersAvailable--;
+
+        LStatueBuilding[cptIdStatueBuilding-1] = p;
+
+        return 1;
+    }else if(typeBuilding == "Hospital"){
+        std::cout << "Building a " + std::to_string(cptIdHospitalBuilding) + " Hospital" << std::endl;
+        Hospital* p = new Hospital;
+        nWorkersAvailable--;
+
+        LHospitalBuilding[cptIdHospitalBuilding-1] = p;
+
+        return 1;
+    }else if(typeBuilding == "Stadium"){
+        std::cout << "Building a " + std::to_string(cptIdStadiumBuilding) + " Stadium" << std::endl;
+        Stadium* p = new Stadium;
+        nWorkersAvailable--;
+
+        LStadiumBuilding[cptIdStadiumBuilding-1] = p;
+
+        return 1;
     
     
-    
-    {
+    }else {
         std::cout << "Building type not found" << std::endl;
         return 0;
     }
@@ -156,8 +306,8 @@ int Game::build(std::string typeBuilding){
 
 int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça, on estime que le joueur crée un nouveau bât que s'il est plein
     if(typeHousing == "Slum"){
-        std::cout << "Adding a worker to a slum" << std::endl;
         if(LSlumBuilding[cptIdSlumBuilding-1]->getNWorker() < LSlumBuilding[cptIdSlumBuilding-1]->getNWorkersMax()){
+            std::cout << "Adding a worker to a slum" << std::endl;
             LSlumBuilding[cptIdSlumBuilding-1]->setNWorker(LSlumBuilding[cptIdSlumBuilding-1]->getNWorker() + 1);
             nWorkers++;
             nWorkersAvailable++;
@@ -195,6 +345,18 @@ int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça
     }
 }
 
+int Game::ActionBuild(std::string typeBuilding, int n){
+    if(checkWorkers(n)){
+        if(build(typeBuilding)){
+            return 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
+}
+
 void Game::newTurn(Game* pgame){
     //New turn de tous les bâtiments	----------
     //Housing buildings :
@@ -217,6 +379,56 @@ void Game::newTurn(Game* pgame){
             std::cout << std::to_string(temp) + " turn left before the end of the construction of the house" << std::endl;
         }
     }
-
+    //Production buildings :
+    for(int i=0; i<cptIdDrillingMachineBuilding; i++){
+        temp = LDrillingMachineBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the drilling machine" << std::endl;
+        }
+    }
+    for(int i=0; i<cptIdSolarPanelBuilding; i++){
+        temp = LSolarPanelBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the solar panel" << std::endl;
+        }
+    }
+    for(int i=0; i<cptIdWindTurbineBuilding; i++){
+        temp = LWindTurbineBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the wind turbine" << std::endl;
+        }
+    }
+    //Reward buildings :    
+    for(int i=0; i<cptIdHotelBuilding; i++){
+        temp = LHotelBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the hotel" << std::endl;
+        }
+    }
+    for(int i=0; i<cptIdHospitalBuilding; i++){
+        temp = LHospitalBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the hospital" << std::endl;
+        }
+    }
+    for(int i=0; i<cptIdStatueBuilding; i++){
+        temp = LStatueBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the statue" << std::endl;
+        }
+    }
+    for (int i=0; i<cptIdReligiousBuilding; i++){
+        temp = LReligiousBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the religious building" << std::endl;
+        }
+    }
+    for(int i=0; i<cptIdStadiumBuilding; i++){
+        temp = LStadiumBuilding[i]->newTurn(pgame);
+        if (temp>0){
+            std::cout << std::to_string(temp) + " turn left before the end of the construction of the stadium" << std::endl;
+        }
+    }
+    //Actualisation des scores	----------------
     nTurn++;
 }
