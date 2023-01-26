@@ -13,6 +13,9 @@ class Date {
         int getMonth(){return month;}
         int getYear(){return year;}
         int setDate();
+        void setDay(int day){this->day = day;}
+        void setMonth(int month){this->month = month;}
+        void setYear(int year){this->year = year;}
         
     private : 
         int day;
@@ -20,6 +23,9 @@ class Date {
         int year;
 };
 
+//Redéfinition d'opérateur pour Date ( > et +)
+bool operator>(Date date1, Date date2);
+Date operator+(Date date1, int n);
 // -------------------  Bâtiments 
 
 //Classes abstraites
@@ -30,9 +36,10 @@ class Building {
         int generateCo2();
         int generateScore();
         int destroy();
-
+    
         //getters
         int getIdBuilding(){return idBuilding;}
+        bool getInConstruction(){return inConstruction;}
 
     protected:
         int idBuilding;
@@ -142,6 +149,7 @@ class Game {
             //Sert à faire des tests en initialisant à un moment donné sans avoir joué
         Game(int money, int petrol, float popularity, int gameScore, int nStadium, int hiddenDeath, int timeLeft, int nWorkers, Date deadline, Date currentDate);
         // Fonctions appelées en pendant le jeu :
+        bool verifEndGame(); //Vérifie si le jeu est fini (deadline ou 5 stadiums)
         int calculGameScore();
         int calculPopularity();
         int calculMoney();

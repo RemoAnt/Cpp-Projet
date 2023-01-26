@@ -75,8 +75,8 @@ int main(){
         std::cout << game.getGameState() << std::endl;
     }
     */
-
-    //TEST3 : test de ActionBuild avec tous les bâtiments
+    /*
+    //TEST3 : test de ActionBuild avec tous les bâtiments 
     std::cout << "\nTEST3 : test de ActionBuild avec tous les bâtiments \n         --------------------------- \n" << std::endl;
     Game game(100, 100, 100, 100, 100, 100, 1, 100, Date(1, 12, 2022), Date(8, 11, 2018)); //1 worker au début
     std::cout << game.getGameState() << std::endl;
@@ -105,5 +105,42 @@ int main(){
         std::cout << game.getGameState() << std::endl;
 
     }
+    */
+
+    //TEST4: test de redéfinition des opérateurs + et > pour la classe Date
+    
+    Date date1 = Date(9, 10, 2019);
+    Date date2 = Date(9, 5, 2019);
+    
+    if(date1>date2){
+        std::cout << "Date 1 > Date 2" << std::endl;
+    } else {
+        std::cout << "Date 1 < Date 2" << std::endl;
+    }
+    
+
+    date2 = date2 + 7;
+    std::cout << "Date 2 est maintenant : " + date2.toString() << std::endl;
+
+    if(date1>date2){
+        std::cout << "Date 1 > Date 2" << std::endl;
+    } else {
+        std::cout << "Date 1 < Date 2" << std::endl;
+    }
+
+    for(int i = 0; i<10; i++){
+        date2 = date2 + 10;
+        std::cout << "Date 2 est maintenant : " + date2.toString() << std::endl;
+    }
+    for(int i=0; i<13; i++){
+        date2 = date2 + 30;
+        std::cout << "Date 2 est maintenant : " + date2.toString() << std::endl;
+    }
+    
+    date2 = date2 + 365;
+    std::cout << "Date 2 est maintenant : " + date2.toString() << std::endl; //Ne marche pas pour plus de 30j
+
+
     return 0;
+
 }
