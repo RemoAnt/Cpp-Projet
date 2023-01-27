@@ -46,28 +46,28 @@ void myRenderText(char* m,int x,int y)
     SDL_FreeSurface(text);
 }
 
-void drawText(Game game)
+void drawText(Game* game)
 {
-    font = TTF_OpenFont("texture/sans.ttf", 25);
-    strcpy(word,("Money : "+ game.getMoney()));
+    font = TTF_OpenFont("texture/sans.ttf", 23);
+    strcpy(word,("Money : "+ std::to_string(game->getMoney())).c_str());
     myRenderText(word,10,30);
-    strcpy(word,("Energy : "+game.getEnergy()));
+    strcpy(word,("Energy : "+std::to_string(game->getEnergy())).c_str());
     myRenderText(word,190,30);
-    strcpy(word,("Popularity : "+std::to_string(game.getPopularity())).c_str());
+    strcpy(word,("Popularity % : "+std::to_string(int(100*game->getPopularity()))).c_str());
     myRenderText(word,370,30);
-    strcpy(word,("Nb of stadium : "+game.getnStadium()));
+    strcpy(word,("Nb of stadium : "+std::to_string(game->getnStadium())).c_str());
     myRenderText(word,560,30);
-    strcpy(word,("Score : "+game.getGameScore()));
+    strcpy(word,("Score : "+std::to_string(game->getGameScore())).c_str());
     myRenderText(word,800,30);
-    int workersav = game.getnWorkersAvailable();
-    int workertot = game.getnWorkers();
-    strcpy(word,("Workers : "+workersav+std::string("/")+std::to_string(workertot)).c_str());
+    int workersav = game->getnWorkersAvailable();
+    int workertot = game->getnWorkers();
+    strcpy(word,("Workers : "+std::to_string(workersav)+std::string("/")+std::to_string(workertot)).c_str());
     myRenderText(word,990,30);
-    strcpy(word,("Turn : "+game.getnTurn()));
+    strcpy(word,("Turn : "+std::to_string(game->getnTurn())).c_str());
     myRenderText(word,1170,30);
-    strcpy(word,("Current date : " + game.getCurrentDate().toString()).c_str());
+    strcpy(word,("Current date : " + game->getCurrentDate().toString()).c_str());
     myRenderText(word,1300,10);
-    strcpy(word,("Deadline : "+ game.getDeadline().toString()).c_str());
+    strcpy(word,("Deadline : "+ game->getDeadline().toString()).c_str());
     myRenderText(word,1343,40);
     strcpy(word,"Housing : ");
     myRenderText(word,1410,100);
@@ -76,8 +76,6 @@ void drawText(Game game)
     strcpy(word,"Others : ");
     myRenderText(word,1410,500);
     TTF_CloseFont(font);
-    
-
 }
 
 void drawBuildingText()
@@ -128,11 +126,11 @@ void drawTextureTile(enum_building type,int x, int y, int w, int h)
     if (type==0)
         drawTexture("texture/sand.png", x, y, w, h);
     else if (type==1)
-        drawTexture("texture/slum.pgn", x, y, w, h);
+        drawTexture("texture/slum.png", x, y, w, h);
     else if (type==2)
         drawTexture("texture/app.png", x, y, w, h);
     else if (type==3)
-        drawTexture("texture/house.pgn", x, y, w, h);
+        drawTexture("texture/house.png", x, y, w, h);
     else if (type==4)
         drawTexture("texture/drillingmachine.png", x, y, w, h);
     else if (type==5)
@@ -157,17 +155,19 @@ void drawTextureTile(enum_building type,int x, int y, int w, int h)
 
 void drawTile()
 {
+    SDL_Delay(1000);     
     for (int i = 1; i < 9; i++)
     {
         for (int j = 0; j < 14; j++)
             drawTextureTile(tabBuilding[px][py],100*j, 100*i, 100, 100);
     }
-
+    
 
     //mise en valeur de la case sélectionée
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 120);
     SDL_Rect select_rect = {px*100,(py+1)*100,100,100}; 
     SDL_RenderFillRect(renderer, &select_rect);
+    
 
 }
 
@@ -204,110 +204,114 @@ void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les
         {
             if (my>800) //next button
                 game->newTurn(game);
-            else if (my>150 && my<200)
+            if (tabBuilding[px][py]==Desert)
             {
-                if(game->ActionBuild("Slum",1,100,100))
+                if (my>150 && my<200 )
                 {
-                    enum_building slum = Slum;
-                    tabBuilding[px][py]= slum;
+                    if(game->ActionBuild("Slum",1,100,100))
+                    {
+                        enum_building slum = Slum;
+                        tabBuilding[px][py]= slum;
+                    }
+                }
+                else if (my>200 && my<250)
+                {
+                    if(game->ActionBuild("Appartments", 1, 500, 300))
+                    {
+                        enum_building appartments = Appartments;
+                        tabBuilding[px][py]= appartments;
+                    }    
+                }
+                else if (my>250 && my<300)
+                {
+                    if(game->ActionBuild("House", 1, 200, 150))
+                    {
+                        enum_building house = House;
+                        tabBuilding[px][py]= house;
+                    } 
+                }
+                else if (my>350 && my<400)
+                {
+                    if(game->ActionBuild("DrillingMachine", 1, 150, 100))
+                    {
+                        enum_building drillingMachine = DrillingMachine;
+                        tabBuilding[px][py]= drillingMachine;
+                    } 
+                }
+                else if (my>400 && my<450)
+                {
+                    if(game->ActionBuild("SolarPanel", 1, 175, 10))
+                    {
+                        enum_building solarPanel = SolarPanel;
+                        tabBuilding[px][py]= solarPanel;
+                    } 
+                }
+                else if (my>450 && my<500)
+                {
+                    if(game->ActionBuild("WindTurbine", 1, 175, 10))
+                    {
+                        enum_building windTurbine = WindTurbine;
+                        tabBuilding[px][py]= windTurbine;
+                    } 
+                }
+                else if (my>550 && my<580)
+                {
+                    if(game->ActionBuild("ReligiousBuilding Christian", 1, 500, 100))
+                    {
+                        enum_building church = Church;
+                        tabBuilding[px][py]= church;
+                    } 
+                }
+                else if (my>580 && my<610)
+                {
+                    if(game->ActionBuild("ReligiousBuilding Jewish", 1, 500, 100))
+                    {
+                        enum_building synagogue = Synagogue;
+                        tabBuilding[px][py]= synagogue;
+                    } 
+                }
+                else if (my>610 && my<640)
+                {
+                    if(game->ActionBuild("ReligiousBuilding Muslim", 1, 500, 100))
+                    {
+                        enum_building mosque = Mosque;
+                        tabBuilding[px][py]= mosque;
+                    } 
+                }
+                else if (my>640 && my<670)
+                {
+                    if(game->ActionBuild("Hotel", 1, 800, 400))
+                    {
+                        enum_building hotel = Hotel;
+                        tabBuilding[px][py]= hotel;
+                    } 
+                }
+                else if (my>670 && my<700)
+                {
+                    if(game->ActionBuild("Hospital", 1, 1000, 500))
+                    {
+                        enum_building hospital = Hospital;
+                        tabBuilding[px][py]= hospital;
+                    } 
+                }
+                else if (my>700 && my<730)
+                {
+                    if(game->ActionBuild("Statue", 1, 1000, 50))
+                    {
+                        enum_building statue = Statue;
+                        tabBuilding[px][py]= statue;
+                    } 
+                }
+                else if (my>730 && my<760)
+                {
+                    if(game->ActionBuild("Stadium", 1, 5000, 1000))
+                    {
+                        enum_building stadium = Stadium;
+                        tabBuilding[px][py]= stadium;
+                    } 
                 }
             }
-            else if (my>200 && my<250)
-            {
-                if(game->ActionBuild("Appartments", 1, 500, 300))
-                {
-                    enum_building appartments = Appartments;
-                    tabBuilding[px][py]= appartments;
-                }    
-            }
-            else if (my>250 && my<300)
-            {
-                if(game->ActionBuild("House", 1, 200, 150))
-                {
-                    enum_building house = House;
-                    tabBuilding[px][py]= house;
-                } 
-            }
-            else if (my>350 && my<400)
-            {
-                if(game->ActionBuild("DrillingMachine", 1, 150, 100))
-                {
-                    enum_building drillingMachine = DrillingMachine;
-                    tabBuilding[px][py]= drillingMachine;
-                } 
-            }
-            else if (my>400 && my<450)
-            {
-                if(game->ActionBuild("SolarPanel", 1, 175, 10))
-                {
-                    enum_building solarPanel = SolarPanel;
-                    tabBuilding[px][py]= solarPanel;
-                } 
-            }
-            else if (my>450 && my<500)
-            {
-                if(game->ActionBuild("WindTurbine", 1, 175, 10))
-                {
-                    enum_building windTurbine = WindTurbine;
-                    tabBuilding[px][py]= windTurbine;
-                } 
-            }
-            else if (my>550 && my<580)
-            {
-                if(game->ActionBuild("ReligiousBuilding Christian", 1, 500, 100))
-                {
-                    enum_building church = Church;
-                    tabBuilding[px][py]= church;
-                } 
-            }
-            else if (my>580 && my<610)
-            {
-                if(game->ActionBuild("ReligiousBuilding Jewish", 1, 500, 100))
-                {
-                    enum_building synagogue = Synagogue;
-                    tabBuilding[px][py]= synagogue;
-                } 
-            }
-            else if (my>610 && my<640)
-            {
-                if(game->ActionBuild("ReligiousBuilding Muslim", 1, 500, 100))
-                {
-                    enum_building mosque = Mosque;
-                    tabBuilding[px][py]= mosque;
-                } 
-            }
-            else if (my>640 && my<670)
-            {
-                if(game->ActionBuild("Hotel", 1, 800, 400))
-                {
-                    enum_building hotel = Hotel;
-                    tabBuilding[px][py]= hotel;
-                } 
-            }
-            else if (my>670 && my<700)
-            {
-                if(game->ActionBuild("Hospital", 1, 1000, 500))
-                {
-                    enum_building hospital = Hospital;
-                    tabBuilding[px][py]= hospital;
-                } 
-            }
-            else if (my>700 && my<730)
-            {
-                if(game->ActionBuild("Statue", 1, 1000, 50))
-                {
-                    enum_building statue = Statue;
-                    tabBuilding[px][py]= statue;
-                } 
-            }
-            else if (my>730 && my<760)
-            {
-                if(game->ActionBuild("Stadium", 1, 5000, 1000))
-                {
-                    enum_building stadium = Stadium;
-                    tabBuilding[px][py]= stadium;
-                } 
-            }
+            
             
 
         }
@@ -335,7 +339,7 @@ int graphic(Game* game)
 
 
         drawTile();
-        //drawText(*game);
+        drawText(game);
         drawBuildingText();
         drawGrid();
         drawTexture("texture/NextButton.png",1400, 800, 200, 100);
