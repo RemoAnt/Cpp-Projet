@@ -5,13 +5,9 @@
 
 //Var global (compteurs)
 //cpt housing buildings
-extern int cptIdSlumBuilding;
-extern int cptIdAppartmentsBuilding;
-extern int cptIdHouseBuilding;
+extern int cptHousingBuilding;
 //cpt production buildings
-extern int cptIdDrillingMachineBuilding;
-extern int cptIdSolarPanelBuilding;
-extern int cptIdWindTurbineBuilding;
+extern int cptProductionBuilding;
 //cpt reward buildings
 extern int cptIdReligiousBuilding;
 extern int cptIdHotelBuilding;
@@ -36,8 +32,8 @@ int Building::newTurn(){
 //Habitats
 //Constructors
 Slum::Slum(){
-    this->idBuilding = cptIdSlumBuilding;
-    cptIdSlumBuilding++;
+    this->idBuilding = cptHousingBuilding;
+    cptHousingBuilding++;
     this->scoreBuilding = 10;
     this->timeToBuilt = 1; 
     this->nWorker = 3;
@@ -46,8 +42,8 @@ Slum::Slum(){
 }
 
 Appartments::Appartments(){
-    this->idBuilding = cptIdAppartmentsBuilding;
-    cptIdAppartmentsBuilding++;
+    this->idBuilding = cptHousingBuilding;
+    cptHousingBuilding++;
     this->scoreBuilding = 10;
     this->timeToBuilt = 3;
     this->nWorker = 5;
@@ -56,8 +52,8 @@ Appartments::Appartments(){
 }
 
 House::House(){
-    this->idBuilding = cptIdHouseBuilding;
-    cptIdHouseBuilding++;
+    this->idBuilding = cptHousingBuilding;
+    cptHousingBuilding++;
     this->scoreBuilding = 50;
     this->timeToBuilt = 2;
     this->nWorker = 2;
@@ -69,24 +65,24 @@ House::House(){
 //Constructors
 
 DrillingMachine::DrillingMachine(){
-    this->idBuilding = cptIdDrillingMachineBuilding;
-    cptIdDrillingMachineBuilding++;
+    this->idBuilding = cptProductionBuilding;
+    cptProductionBuilding++;
     this->scoreBuilding = 50;
     this->timeToBuilt = 1;
     this->inConstruction = true;
 }
 
 SolarPanel::SolarPanel(){
-    this->idBuilding = cptIdSolarPanelBuilding;
-    cptIdSolarPanelBuilding++;
+    this->idBuilding = cptProductionBuilding;
+    cptProductionBuilding++;
     this->scoreBuilding = 70;
     this->timeToBuilt = 1;
     this->inConstruction = true;
 }
 
 WindTurbine::WindTurbine(){
-    this->idBuilding = cptIdWindTurbineBuilding;
-    cptIdWindTurbineBuilding++;
+    this->idBuilding = cptProductionBuilding;
+    cptProductionBuilding++;
     this->scoreBuilding = 70;
     this->timeToBuilt = 1;
     this->inConstruction = true;
@@ -94,12 +90,15 @@ WindTurbine::WindTurbine(){
 
 //Reward
 //Constructors
-ReligiousBuilding::ReligiousBuilding(){
+ReligiousBuilding::ReligiousBuilding(){}
+
+ReligiousBuilding::ReligiousBuilding(religion religionType){
     this->idBuilding = cptIdReligiousBuilding;
     cptIdReligiousBuilding++;
     this->scoreBuilding = 300;
     this->timeToBuilt = 5;
     this->inConstruction = true;
+    this->religionType = religionType;
 }
 
 Hotel::Hotel(){
@@ -132,4 +131,30 @@ Stadium::Stadium(){
     this->scoreBuilding = 1000;
     this->timeToBuilt = 6;
     this->inConstruction = true;
+}
+
+//String Religion
+
+std::string ReligiousBuilding::stringReligion(){
+    switch (this->religionType)
+    {
+    case religion::christianity:
+        return "Christianity";
+        
+    case religion::islam:
+        return "Islam";
+        
+    case religion::judaism:
+        return "Judaism";
+            
+    default:
+        return "No religion";
+    }
+}
+//Generate score and C02
+
+int RewardBuilding::generateScore(){} //Warning retourne rien
+
+int Hotel::generateScore(int popularity){
+    return (this->scoreBuilding + popularity);
 }

@@ -6,8 +6,8 @@
 class Building { 
     public:
         int newTurn();
-        int generateCo2();
-        int generateScore();
+        int generateCo2() {return CO2;}
+        virtual int generateScore() {return scoreBuilding;}
         int destroy();
     
         //getters
@@ -17,13 +17,13 @@ class Building {
     protected:
         int idBuilding;
         int scoreBuilding; 
+        int CO2;
         int timeToBuilt; //in turns
         bool inConstruction;
 };
 
 class HousingBuilding : public Building {
     public:
-        int sick();
         int getNWorker(){return nWorker;}
         int setNWorker(int n){nWorker = n; return n;}
         //int getNWorkersMax(){return nWorkersMax;}
@@ -35,13 +35,17 @@ class HousingBuilding : public Building {
 
 class ProductionBuilding : public Building {
     public:
-        int generateRessource();
+        int generateRessource() {return energy;}
+        int generateMoney() {return outcome;}
     
+    protected:
+        int energy;
+        int outcome;
 };
 
 class RewardBuilding : public Building {
     public:
-        int generateScore();
+        virtual int generateScore();
 };
 
 //Habitats :
@@ -66,49 +70,45 @@ class House : public HousingBuilding{ //Peu de chance d'être malade, cher compa
 class DrillingMachine : public ProductionBuilding {
     public:
         DrillingMachine();
-        int generateRessource();
         int generateDeath();
 };
 
 class SolarPanel : public ProductionBuilding {
     public:
         SolarPanel();
-        int generateRessource();
 };
 class WindTurbine : public ProductionBuilding {
     public:
         WindTurbine();
-        int generateRessource();
 };
 
 //Reward :
+enum religion {christianity, islam, judaism};
 class ReligiousBuilding : public RewardBuilding {
     public:
-        int generateScore();
         ReligiousBuilding();
-     
+        ReligiousBuilding(religion religionType);
+        std::string stringReligion();
+
+    private:    
+        religion religionType;
+             
 };
+
 class Hotel : public RewardBuilding {
     public:
         Hotel();
-        int generateScore();
+        int generateScore(int popularity); //+ popularité, + de score
 };
 class Statue : public RewardBuilding {
     public:
         Statue();
-        int generateScore();
 };
 class Hospital : public RewardBuilding {
     public:
         Hospital();
-        int generateScore();
-        int welcomedSicks();
-        int getNRooms(){return nRooms;}
-    private :
-        int nRooms;
 };
 class Stadium : public RewardBuilding {
     public:
         Stadium();
-        int generateScore();
 };

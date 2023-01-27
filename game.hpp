@@ -23,15 +23,16 @@ class Game {
         int calculPetrol();
         int calculTimeLeft();
         int calculDeath();
-        void newTurn(Game* pgame);
+        bool newTurn(Game* pgame);
 
         //Actions du joueur
+        int checkMoney(int n); //Vérifie s'il reste assez d'argent
         int checkWorkers(int n); //Vérifie s'il reste assez de travailleurs disponibles
         int build(std::string typeBuilding);
         int destroy(std::string typeBuilding);
         //int addWorker(std::string typeHousing); //Fonctionnalité abandonnée mais implémentée. On la trouvait inutile pour le jeu
         
-        int ActionBuild(std::string typeBuilding, int n);
+        int ActionBuild(std::string typeBuilding, int n, int m);
 
         // Fonction appelée qu'à la fin
         int fin();        
@@ -56,7 +57,7 @@ class Game {
         int money;
         int petrol; 
         int electricity;
-        float popularity; //En n spectateurs ?, dépend des bât et en débloquent certains (par exemple au bout de tant d'hôtel, on peut faire une statue)
+        int popularity; //En n spectateurs ?, dépend des bât et en débloquent certains (par exemple au bout de tant d'hôtel, on peut faire une statue)
         int gameScore;
         int nStadium;
         int hiddenDeath;
@@ -68,12 +69,10 @@ class Game {
         Date currentDate;
 
         //Liste des bâtiments
-        std::vector<Slum*> LSlumBuilding;
-        std::vector<Appartments*> LAppartmentsBuilding; 
-        std::vector<House*> LHouseBuilding;
-        std::vector<DrillingMachine*> LDrillingMachineBuilding;
-        std::vector<SolarPanel*> LSolarPanelBuilding;
-        std::vector<WindTurbine*> LWindTurbineBuilding;
+        std::vector<HousingBuilding*> LHousingBuilding;
+        std::vector<ProductionBuilding*> LProductionBuilding; 
+        
+        //Pour les rewards buildings, on a une liste par type de bâtiment car ils ont des traitements différents à chaque tour
         std::vector<ReligiousBuilding*> LReligiousBuilding;
         std::vector<Hotel*> LHotelBuilding;
         std::vector<Statue*> LStatueBuilding;
