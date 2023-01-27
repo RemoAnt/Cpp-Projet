@@ -49,6 +49,7 @@ class Game {
         int getnWorkers(){return nWorkers;}
         int getnWorkersAvailable(){return nWorkersAvailable;}
         int setnWorkersAvailable(int n){nWorkersAvailable = n; return nWorkersAvailable;}
+        int getnTurn(){return nTurn;}
         std::string getGameState(); //Dans l'invite de commande
 
 
