@@ -74,7 +74,7 @@ std::string Game::getGameState(){
 
     gameState += "\n-" + std::to_string(cptIdHotelBuilding) + " Hotel";
     gameState += "\n-" + std::to_string(cptIdHospitalBuilding) + " Hospital";
-    for(int i=0; i<LReligiousBuilding.size(); i++){
+    for(int i=0; i<int(LReligiousBuilding.size()); i++){
         gameState += "\nReligious building number " + std::to_string(i) + " : " + LReligiousBuilding.at(i)->stringReligion();        
     }
     gameState += "\n-" + std::to_string(cptIdStatueBuilding) + " Statue";

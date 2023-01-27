@@ -3,6 +3,7 @@
 #include "buildings.hpp"
 #include "date.hpp"
 #include "game.hpp"
+#include "field.hpp"
 
 //Main-------------------------------------------------------------------------------------------------
 int main(){
@@ -197,7 +198,7 @@ int main(){
         std::cout << game2.getGameState() << std::endl;
         game2.ActionBuild("Stadium", 1, 5000, 1000);
     }
-    */
+    
 
     //TEST7 : partie typique
     std::cout << "\nTEST7 : partie typique \n         --------------------------- \n" << std::endl;
@@ -292,7 +293,9 @@ int main(){
     
     game.newTurn(&game); //Fin de partie (5 stadiums construits)
 
-
+    */
+    Game game;
+    graphic(&game);
     return 0;
 
 }
