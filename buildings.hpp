@@ -8,6 +8,7 @@ class Building {
         int newTurn();
         int generateCo2() {return CO2;}
         virtual int generateScore() {return scoreBuilding;}
+        virtual int generateDeath() {return 0;}
         int destroy();
     
         //getters
@@ -26,6 +27,7 @@ class HousingBuilding : public Building {
     public:
         int getNWorker(){return nWorker;}
         int setNWorker(int n){nWorker = n; return n;}
+        virtual int generateDeath() {return 0;}
         //int getNWorkersMax(){return nWorkersMax;}
 
     protected: 
@@ -43,10 +45,6 @@ class ProductionBuilding : public Building {
         int outcome;
 };
 
-class RewardBuilding : public Building {
-    public:
-        virtual int generateScore();
-};
 
 //Habitats :
 //Proba d'être malade gérée dans sick en fct du type de Housing que c'est.
@@ -84,7 +82,7 @@ class WindTurbine : public ProductionBuilding {
 
 //Reward :
 enum religion {christianity, islam, judaism};
-class ReligiousBuilding : public RewardBuilding {
+class ReligiousBuilding : public Building {
     public:
         ReligiousBuilding();
         ReligiousBuilding(religion religionType);
@@ -95,20 +93,20 @@ class ReligiousBuilding : public RewardBuilding {
              
 };
 
-class Hotel : public RewardBuilding {
+class Hotel : public Building {
     public:
         Hotel();
         int generateScore(int popularity); //+ popularité, + de score
 };
-class Statue : public RewardBuilding {
+class Statue : public Building {
     public:
         Statue();
 };
-class Hospital : public RewardBuilding {
+class Hospital : public Building {
     public:
         Hospital();
 };
-class Stadium : public RewardBuilding {
+class Stadium : public Building {
     public:
         Stadium();
 };

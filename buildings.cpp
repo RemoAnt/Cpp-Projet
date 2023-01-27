@@ -39,6 +39,7 @@ Slum::Slum(){
     this->nWorker = 3;
     //this->nWorkersMax = 3;
     this->inConstruction = true;
+    this->CO2 = 100;
 }
 
 Appartments::Appartments(){
@@ -49,6 +50,7 @@ Appartments::Appartments(){
     this->nWorker = 5;
     //this->nWorkersMax = 5;
     this->inConstruction = true;
+    this->CO2 = 30;
 }
 
 House::House(){
@@ -59,6 +61,7 @@ House::House(){
     this->nWorker = 2;
     //this->nWorkersMax = 1;
     this->inConstruction = true;
+    this->CO2 = 1;
 }
 
 //Production
@@ -70,6 +73,9 @@ DrillingMachine::DrillingMachine(){
     this->scoreBuilding = 50;
     this->timeToBuilt = 1;
     this->inConstruction = true;
+    this->energy = 40;
+    this->outcome = 60;
+    this->CO2 = 1000;
 }
 
 SolarPanel::SolarPanel(){
@@ -78,6 +84,9 @@ SolarPanel::SolarPanel(){
     this->scoreBuilding = 70;
     this->timeToBuilt = 1;
     this->inConstruction = true;
+    this->energy = 40;
+    this->outcome = 50;
+    this->CO2 = 0;
 }
 
 WindTurbine::WindTurbine(){
@@ -86,6 +95,9 @@ WindTurbine::WindTurbine(){
     this->scoreBuilding = 70;
     this->timeToBuilt = 1;
     this->inConstruction = true;
+    this->energy = 40;
+    this->outcome = 50;
+    this->CO2 = 0;
 }
 
 //Reward
@@ -151,10 +163,16 @@ std::string ReligiousBuilding::stringReligion(){
         return "No religion";
     }
 }
-//Generate score and C02
-
-int RewardBuilding::generateScore(){} //Warning retourne rien
+//Generate score concrete
 
 int Hotel::generateScore(int popularity){
     return (this->scoreBuilding + popularity);
+}
+
+int DrillingMachine::generateDeath(){
+    return (150);
+}
+
+int Slum::generateDeath(){
+    return (215);
 }

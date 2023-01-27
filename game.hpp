@@ -14,37 +14,36 @@ class Game {
         //Constructeurs
         Game();
             //Sert à faire des tests en initialisant à un moment donné sans avoir joué
-        Game(int money, int petrol, float popularity, int gameScore, int nStadium, int hiddenDeath, int timeLeft, int nWorkers, Date deadline, Date currentDate);
+        Game(int money, int energy, float popularity, int gameScore, int nStadium, int hiddenDeath, int nWorkers, Date deadline, Date currentDate);
         // Fonctions appelées en pendant le jeu :
         bool verifEndGame(); //Vérifie si le jeu est fini (deadline ou 5 stadiums)
         int calculGameScore();
         int calculPopularity();
-        int calculMoney();
-        int calculPetrol();
-        int calculTimeLeft();
+        int calculMoney(); 
+        int calculEnergy();
         int calculDeath();
         bool newTurn(Game* pgame);
 
         //Actions du joueur
         int checkMoney(int n); //Vérifie s'il reste assez d'argent
         int checkWorkers(int n); //Vérifie s'il reste assez de travailleurs disponibles
+        int checkEnergy(int n); //Vérifie s'il reste assez d'énergie
         int build(std::string typeBuilding);
         int destroy(std::string typeBuilding);
         //int addWorker(std::string typeHousing); //Fonctionnalité abandonnée mais implémentée. On la trouvait inutile pour le jeu
         
-        int ActionBuild(std::string typeBuilding, int n, int m);
+        int ActionBuild(std::string typeBuilding, int w, int m, int e);
 
         // Fonction appelée qu'à la fin
-        int fin();        
+        void fin();        
 
         //Getters / Setters 
         int getMoney(){return money;}
-        int getPetrol(){return petrol;}
+        int getEnergy(){return energy;}
         float getPopularity(){return popularity;}
         int getGameScore(){return gameScore;}
         int getnStadium(){return nStadium;}
         int getHiddenDeath(){return hiddenDeath;}
-        int getTimeLeft(){return timeLeft;}
         Date getDeadline(){return deadline;}
         Date getCurrentDate(){return currentDate;}
         int getnWorkers(){return nWorkers;}
@@ -55,13 +54,11 @@ class Game {
 
     private:
         int money;
-        int petrol; 
-        int electricity;
+        int energy;
         int popularity; //En n spectateurs ?, dépend des bât et en débloquent certains (par exemple au bout de tant d'hôtel, on peut faire une statue)
         int gameScore;
         int nStadium;
         int hiddenDeath;
-        int timeLeft;
         int nWorkers;
         int nWorkersAvailable;
         int nTurn;
