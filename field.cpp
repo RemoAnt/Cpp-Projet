@@ -42,7 +42,7 @@ enum enum_building
 };
 enum_building tabBuilding[14][8];
 
-//affichage d'un texte
+//show a text
 void myRenderText(char* m,int x,int y)
 {
     SDL_Surface* text = TTF_RenderText_Blended(font, m, SDL_Color{ 0, 0, 0, 255 }); 
@@ -117,6 +117,7 @@ void drawBuildingText()
     TTF_CloseFont(font);
 }
 
+//show an image
 void drawTexture(std::string file,int x, int y, int w, int h)
 {
     strcpy(word,file.c_str());
@@ -128,6 +129,7 @@ void drawTexture(std::string file,int x, int y, int w, int h)
     SDL_DestroyTexture(texture_tile);
 }
 
+//show an image depends on its type
 void drawTextureTile(enum_building type,int x, int y, int w, int h)
 {
     if (type==0)
@@ -160,6 +162,7 @@ void drawTextureTile(enum_building type,int x, int y, int w, int h)
         drawTexture("texture/stadium.jpeg", x, y, w, h);
 }
 
+//show all the tiles
 void drawTile()
 {
     SDL_Surface * tile = IMG_Load("texture/sand.png");
@@ -180,7 +183,7 @@ void drawTile()
     }
     
 
-    //mise en valeur de la case sélectionée
+    //mise en valeur de la case sélectionée en surlignant en bleu
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 120);
     SDL_Rect select_rect = {px*100,(py+1)*100,100,100}; 
     SDL_RenderFillRect(renderer, &select_rect);
@@ -199,7 +202,8 @@ void drawGrid()
                 
 }
 
-void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les différents inputs
+//input manager 
+void manageEvent(SDL_Event event,Game* game)
 {
  switch (event.type)
  {
@@ -212,7 +216,7 @@ void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les
         break;
     case  SDL_MOUSEBUTTONDOWN:
         SDL_GetMouseState( &mx, &my );
-        if (my>100 && mx<1400)
+        if (my>100 && mx<1400) //if a tile is selected
         {
             px = mx/100;
             py = my/100-1;
@@ -225,7 +229,7 @@ void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les
                 if(game->newTurn(game) == false)
                     game_end = 1;
             }
-            if (tabBuilding[px][py]==Desert)
+            if (tabBuilding[px][py]==Desert) //construction of a building
             {
                 if (my>150 && my<200 )
                 {
@@ -340,6 +344,7 @@ void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les
  }
 }
 
+
 void endGame(Game* game)
 {
     SDL_Rect rectangle{ WIDTHSCREEN/2-300, HEIGHTSCREEN/2-150, 600, 300 };
@@ -348,6 +353,8 @@ void endGame(Game* game)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderDrawRect(renderer, &rectangle);
     font = TTF_OpenFont("texture/sans.ttf", 23);
+
+    //separate the main string to show into smaller strings
     std::string original = game->fin().c_str();
     std::string sub1 = original.substr(0,18);
     int pos1 = original.find("but...");
@@ -409,7 +416,7 @@ int graphic(Game* game)
         drawGrid();
         drawTexture("texture/NextButton.png",1400, 800, 200, 100);
         
-        if( game->getCurrentDate() > game->getDeadline())
+        if( game->getCurrentDate() > game->getDeadline()) //if over the deadline 
         {
             SDL_Rect rectangle{ WIDTHSCREEN/2-300, HEIGHTSCREEN/2-150, 600, 300 };
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -436,6 +443,3 @@ int graphic(Game* game)
  
     return 0;
 }
- 
-
-//attention au mvmt de souris trop brusque rique de faire planter 
