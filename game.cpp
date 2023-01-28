@@ -255,8 +255,8 @@ int Game::build(std::string typeBuilding){
         return 0;
     }
 }
-
-/*int Game::addWorker(std::string typeHousing){ //Avec la fonction faite comme ça, on estime que le joueur crée un nouveau bât que s'il est plein
+//Fonctionnalité annulée
+/*int Game::addWorker(std::string typeHousing){ 
     if(typeHousing == "Slum"){
         if(LHousingBuilding.at(cptHousingBuilding-1)->getNWorker() < LHousingBuilding.at(cptHousingBuilding-1)->getNWorkersMax()){
             std::cout << "Adding a worker to a slum" << std::endl;
@@ -439,7 +439,7 @@ std::string Game::fin(){
     return ret;
 }
 
-bool Game::newTurn(Game* pgame){
+bool Game::newTurn(Game* pgame){ //Tant que la partie n'est pas finie, renvoie true
     //New turn de tous les bâtiments	----------
     //verif nstadium et deadline
     if(verifEndGame()){
