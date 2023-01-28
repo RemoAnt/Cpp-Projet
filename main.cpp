@@ -298,6 +298,8 @@ int main(){
     ---------------------------------------
     */
 
+    //JEU FINAL ---------------------------------------------------------
+    //Pour lancer la partie graphique :
 
     Game game;
     graphic(&game);
