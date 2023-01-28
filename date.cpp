@@ -36,21 +36,21 @@ Date operator+(Date date1, int n){  //ATTENTION : sûrement problème si on ajou
     date2.setMonth(date1.getMonth());
     date2.setYear(date1.getYear());
 
-    //while j > 31
+    
     if(date2.getMonth()==1 || date2.getMonth()==3 || date2.getMonth()==5 || date2.getMonth()==7 || date2.getMonth()==8 || date2.getMonth()==10 || date2.getMonth()==12){
         if(date2.getDay() > 31){
             date2.setDay(date2.getDay() - 31);
             date2.setMonth(date2.getMonth() + 1);
         }
     }
-    //while j > 30
+    
     else if(date2.getMonth()==4 || date2.getMonth()==6 || date2.getMonth()==9 || date2.getMonth()==11){
         if(date2.getDay() > 30){
             date2.setDay(date2.getDay() - 30);
             date2.setMonth(date2.getMonth() + 1);
         }
     }
-    //while j > 28
+    
     else if(date2.getMonth()==2){
         if(date2.getDay() > 28){
             date2.setDay(date2.getDay() - 28);
