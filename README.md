@@ -11,7 +11,9 @@ In this game, you have to build 5 stadiums before a deadline which is the start 
 Type this in your linux command :
 
 sudo apt-get install libsdl2-dev
+
 sudo apt-get install libsdl2-image-dev
+
 sudo apt-get install libsdl2-ttf-dev
 
 
