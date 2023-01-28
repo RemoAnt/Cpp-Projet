@@ -4,6 +4,7 @@
 #include <string> 
 #include "game.hpp"
 #include "buildings.hpp"
+#include "date.hpp"
 
 #define WIDTHSCREEN 1600
 #define HEIGHTSCREEN 900
@@ -14,8 +15,14 @@ SDL_Event event;
 //SDL_Surface *tile; 
 //SDL_Texture *texture_tile;
 TTF_Font* font;
-char word[64];
+char word[256];
 int mx,my,px,py;
+int game_end;
+extern int cptProductionBuilding;
+extern int cptHousingBuilding;
+extern int cptIdHospitalBuilding;
+
+
 enum enum_building
 {
     Desert,
@@ -29,8 +36,8 @@ enum enum_building
     Synagogue,
     Mosque,
     Hotel,
-    Statue,
     Hospital,
+    Statue,
     Stadium
 };
 enum_building tabBuilding[14][8];
@@ -53,10 +60,10 @@ void drawText(Game* game)
     myRenderText(word,10,30);
     strcpy(word,("Energy : "+std::to_string(game->getEnergy())).c_str());
     myRenderText(word,190,30);
-    strcpy(word,("Popularity % : "+std::to_string(int(100*game->getPopularity()))).c_str());
+    strcpy(word,("Popularity % : "+std::to_string(game->getPopularity())).c_str());
     myRenderText(word,370,30);
     strcpy(word,("Nb of stadium : "+std::to_string(game->getnStadium())).c_str());
-    myRenderText(word,560,30);
+    myRenderText(word,600,30);
     strcpy(word,("Score : "+std::to_string(game->getGameScore())).c_str());
     myRenderText(word,800,30);
     int workersav = game->getnWorkersAvailable();
@@ -155,11 +162,21 @@ void drawTextureTile(enum_building type,int x, int y, int w, int h)
 
 void drawTile()
 {
-    SDL_Delay(1000);     
+    SDL_Surface * tile = IMG_Load("texture/sand.png");
+    SDL_Texture * texture_tile = SDL_CreateTextureFromSurface(renderer, tile);
+    SDL_FreeSurface(tile);
+    SDL_Rect dstrect = { 0, 100, 1400, 800 };
+    SDL_RenderCopy(renderer,texture_tile, NULL, &dstrect);
+              
     for (int i = 1; i < 9; i++)
     {
         for (int j = 0; j < 14; j++)
-            drawTextureTile(tabBuilding[px][py],100*j, 100*i, 100, 100);
+        {
+            if (tabBuilding[j][i-1]!=Desert)
+            {
+                drawTextureTile(tabBuilding[j][i-1],100*j, 100*(i), 100, 100);
+            }
+        }
     }
     
 
@@ -167,8 +184,9 @@ void drawTile()
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 120);
     SDL_Rect select_rect = {px*100,(py+1)*100,100,100}; 
     SDL_RenderFillRect(renderer, &select_rect);
-    
 
+    
+    SDL_DestroyTexture(texture_tile);
 }
 
 
@@ -203,7 +221,10 @@ void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les
         else if (my>100 && mx>1400) 
         {
             if (my>800) //next button
-                game->newTurn(game);
+            {
+                if(game->newTurn(game) == false)
+                    game_end = 1;
+            }
             if (tabBuilding[px][py]==Desert)
             {
                 if (my>150 && my<200 )
@@ -319,13 +340,58 @@ void manageEvent(SDL_Event event,Game* game) //fonction permettant de gérer les
  }
 }
 
+void endGame(Game* game)
+{
+    SDL_Rect rectangle{ WIDTHSCREEN/2-300, HEIGHTSCREEN/2-150, 600, 300 };
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderFillRect(renderer, &rectangle);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderDrawRect(renderer, &rectangle);
+    font = TTF_OpenFont("texture/sans.ttf", 23);
+    std::string original = game->fin().c_str();
+    std::string sub1 = original.substr(0,18);
+    int pos1 = original.find("but...");
+    std::string sub2 = original.substr(19,pos1-13);
+    int pos2 = original.find("YNY");
+    std::string sub3 = original.substr(7+pos1,pos2-7-pos1);
+    int pos3 = original.find("You are a good citizen, you ");
+    if (pos3 !=-1)
+    { 
+        std::string sub4 = original.substr(pos3,50);
+        std::string sub5 = original.substr(pos3+50,42);
+        strcpy(word,sub4.c_str());
+        myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150+90);
+        strcpy(word,sub5.c_str());
+        myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150+120);
+    }
+    int pos4 = original.find("Unfortunately,");
+    if (pos4!=-1)
+    {
+        int pos5 = original.find("AZE");
+        std::string sub6 = original.substr(pos4,pos5-pos4);
+        strcpy(word,sub6.c_str());
+        myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150+150);
+    }
+    
+    strcpy(word,sub1.c_str());
+    myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150);
+    strcpy(word,sub2.c_str());
+    myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150+30);
+    strcpy(word,sub3.c_str());
+    myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150+60);
+    
+
+
+    TTF_CloseFont(font);
+}
+
 int graphic(Game* game)
 {
 
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
      
-    window = SDL_CreateWindow("QATAR",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTHSCREEN, HEIGHTSCREEN, 0); //création de la fenêtre
+    window = SDL_CreateWindow("Qatar City Simulator",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTHSCREEN, HEIGHTSCREEN, 0); //création de la fenêtre
     renderer = SDL_CreateRenderer(window, -1, 0); //création du rendu
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
@@ -337,14 +403,30 @@ int graphic(Game* game)
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
-
         drawTile();
         drawText(game);
         drawBuildingText();
         drawGrid();
         drawTexture("texture/NextButton.png",1400, 800, 200, 100);
         
-        SDL_RenderPresent(renderer);
+        if( game->getCurrentDate() > game->getDeadline())
+        {
+            SDL_Rect rectangle{ WIDTHSCREEN/2-300, HEIGHTSCREEN/2-150, 600, 300 };
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_RenderFillRect(renderer, &rectangle);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderDrawRect(renderer, &rectangle);
+            font = TTF_OpenFont("texture/sans.ttf", 50);
+            strcpy(word,"You lose");
+            myRenderText(word,WIDTHSCREEN/2-300+10,HEIGHTSCREEN/2-150);
+
+            TTF_CloseFont(font); 
+        }
+        if(game_end==1)
+            endGame(game);
+            
+
+        SDL_RenderPresent(renderer); 
     }
 
     SDL_DestroyRenderer(renderer);

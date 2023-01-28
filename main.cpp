@@ -293,7 +293,12 @@ int main(){
     
     game.newTurn(&game); //Fin de partie (5 stadiums construits)
 
+    return 0;
+
+    ---------------------------------------
     */
+
+
     Game game;
     graphic(&game);
     return 0;

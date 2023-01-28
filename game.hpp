@@ -35,12 +35,12 @@ class Game {
         int ActionBuild(std::string typeBuilding, int w, int m, int e);
 
         // Fonction appelée qu'à la fin
-        void fin();        
+        std::string fin();        
 
         //Getters / Setters 
         int getMoney(){return money;}
         int getEnergy(){return energy;}
-        float getPopularity(){return popularity;}
+        int getPopularity(){return popularity;}
         int getGameScore(){return gameScore;}
         int getnStadium(){return nStadium;}
         int getHiddenDeath(){return hiddenDeath;}

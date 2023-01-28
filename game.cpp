@@ -402,9 +402,12 @@ int Game::calculEnergy(){
     return energy;
 }
 
-void Game::fin(){
+std::string Game::fin(){
+    std::string ret ="";
     std::cout << "Dear Qatar Prince,\n" << std::endl;
+    ret+= "Dear Qatar Prince,\n";
     std::cout << "Your score : *" << gameScore << "*, great but..." << std::endl;
+    ret+= "Your score : *" + std::to_string(gameScore) + "*, great but...\n";
     int C02 = 0;
     for(int i=0; i<cptProductionBuilding; i++){
         C02 += (LProductionBuilding.at(i))->generateCo2();
@@ -413,9 +416,11 @@ void Game::fin(){
         C02 += (LHousingBuilding.at(i))->generateCo2();
     }
     std::cout << "C02 in order to get to your goals : " << C02 << std::endl;
+    ret += "C02 in order to get to your goals : " + std::to_string(C02)+"YNY";
 
     if(C02 < 2000){
         std::cout << "You are a good citizen, you have a good score and you have a low C02 impact, congratulations !" << std::endl;
+        ret += "You are a good citizen, you have a good score and you have a low C02 impact, congratulations !\n";
     }
     
     int nDeaths = 0;
@@ -426,8 +431,12 @@ void Game::fin(){
         nDeaths += (LProductionBuilding.at(i))->generateDeath();
     }
     if(cptIdHospitalBuilding != 0) nDeaths = (int)nDeaths/(2*cptIdHospitalBuilding);
-    if(nDeaths > 0) std::cout << "Infortunately, you have engranged this number of deaths : " << nDeaths << std::endl;
-
+    if(nDeaths > 0) 
+    {
+        std::cout << "Unfortunately, you have engranged this number of deaths : " << nDeaths << std::endl;
+        ret += "Unfortunately, you have engranged this number of deaths : " + std::to_string(nDeaths)+"AZE";
+    }
+    return ret;
 }
 
 bool Game::newTurn(Game* pgame){
