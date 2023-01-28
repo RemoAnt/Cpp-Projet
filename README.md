@@ -22,6 +22,7 @@ sudo apt-get install libsdl2-ttf-dev
 Type this :
 
 make
+
 ./out
 
 
