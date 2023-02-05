@@ -33,7 +33,7 @@ What you can build is wrote on the right.
 Select a case and click on what you want.
 When you need ressources click on NEXT to go to the next turn.
 
-Be careful of not going over the deadline !
+Be careful to not going over the deadline !
 
 
 
